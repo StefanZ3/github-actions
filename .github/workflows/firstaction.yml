@@ -16,6 +16,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -27,7 +28,20 @@ jobs:
     steps:
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, $name!
+        run: |
+            echo Hello, $name!
+            echo Actor: ${{github.actor}}
+            echo Commited By: ${{github.event.commits[0].author.name}}
+
+
+  dump:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Dump Github contet
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run:
+          echo "$GITHUB_CONTEXT"
 
     
   pull_request_only:
@@ -44,3 +58,5 @@ jobs:
           run: |
             echo Add other actions to build,
             echo test, and deploy your project.
+ 
+ 
